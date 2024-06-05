@@ -1,0 +1,8 @@
+private List<Process> validateRepeat(String name, String path) {
+        QueryWrapper<Process> queryWrapper = new QueryWrapper();
+        queryWrapper.lambda().eq(StringUtils.isNotBlank(name), Process::getName, name)
+                .or().eq(StringUtils.isNotBlank(path), Process::getPath, path);
+        return processMapper.selectList(queryWrapper);
+    }
+
+  List<FacilityMaintenanceVO> maintenanceVoList = pageRecord.getRows().stream().filter(distinctByField(FacilityMaintenanceVO::getFacilityId)).collect(Collectors.toList());
