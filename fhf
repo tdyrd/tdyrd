@@ -1,0 +1,82 @@
+const db = wx.cloud.database({
+  env: 'cloud 你的环境id'
+})
+Page({
+  data: { 
+    // 左侧的菜单数据
+    leftMenuList:[],
+    // 右侧的商品数据
+    rightContent:[],
+    // 被点击的左侧的菜单
+    currentIndex:0,
+    // 接口的返回数据
+    Cates:[],
+    // 右侧内容的滚动条距离顶部的距离
+    scrollTop:0
+  }, 
+  onLoad: function (options) {
+    // 获取本地存储中的数据
+    const Cates = wx.getStorageSync('cates');
+    // 判断
+    if(!Cates){
+      // 不存在缓存 发送请求获取数据
+      console.log("不存在缓存 发送请求获取数据");
+      this.getCates();
+    }else{
+      // 有旧的数据 定义一个过期时间10min
+      if(Date.now()-Cates.times>1000*60*10){
+        // 重新发送请求
+        this.getCates();
+        console.log("重新发送请求");
+      }else{
+        console.log("使用旧的数据");
+        // 可以使用旧的数据
+        this.Cates = Cates.data;
+        // 构造左侧的大菜单数据
+        let leftMenuList = this.Cates.map(v=>v.cat_name);
+        // 构造右侧商品数据
+        let rightContent = this.Cates[0].children;
+        this.setData({
+          leftMenuList,
+          rightContent,
+        })
+      }
+    }
+  },
+  // 获取分类数据
+  getCates(){
+    // 获取数据库allcategorys数据
+    db.collection("allcategorys").get({
+      success:res=>{
+        this.Cates = res.data;
+        // 把接口的数据存入到本地存储中
+        wx.setStorageSync('cates', {time:Date.now(),data:this.Cates});
+        // 构造左侧的大菜单数据
+        let leftMenuList = this.Cates.map(v=>v.cat_name);
+        // 构造右侧商品数据
+        let rightContent = this.Cates[0].children;
+        this.setData({
+          leftMenuList,
+          rightContent,
+        })
+      },
+      fail:function(err){
+        console.log("失败"+err);
+      }
+    });
+  },
+  // 左侧菜单的点击事件
+  handleItemTap(e){
+    // 获取被点击的标题身上的索引
+    const {index} = e.currentTarget.dataset;
+    // 构造右侧商品数据
+    let rightContent = this.Cates[index].children;
+    // 根据不同的索引来渲染右侧的商品内容
+    this.setData({
+      currentIndex:index,
+      rightContent,
+       // 重新设置右侧内容的scroll-view 标签的距离顶部的距离
+       scrollTop:0
+    })
+  }
+})
