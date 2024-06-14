@@ -1,0 +1,21 @@
+<mp-searchbar></mp-searchbar>
+<view class="first_tab">
+    <navigator class="goods_item"
+    wx:for="{{GoodsList}}"
+    wx:key="*this"
+    url="/pages/goods_detail/goods_detail?goods_id={{item.goods_id}}"
+    >
+        <!-- 上方图片容器 -->
+        <view class="goods_img_wrap">
+            <image mode="widthFix" src="{{item.pic_url[0]?item.pic_url[0]:'https://7465-test-8g5rr5sy2d200af3-1307758559.tcb.qcloud.la/img/%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2%E5%88%86%E7%B1%BB%E5%9B%BE%E6%A0%87/%E6%9A%82%E6%97%A0%E5%9B%BE%E7%89%87.jpg?sign=dd9d062cbf3d41fe3821151a66f1348d&t=1635485781'}}" />
+        </view>
+        <!-- 下方商品容器 -->
+            <view class="goods_info_wrap">
+                <!-- 商品名称介绍 -->
+                <view class="goods_detail">{{item.goods_name}}</view>
+                <!-- 商品价格 -->
+                <view class="goods_price">￥{{item.goods_price}}</view> 
+            </view>
+    </navigator>
+</view>
+
