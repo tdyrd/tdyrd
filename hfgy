@@ -1,0 +1,16 @@
+    # 失败重试，最大重试次数为4
+        for try_count in range(4):
+            try:
+                pbar.set_description("正在导出笔记【{}】".format(book_name))
+                notes = get_bookmarklist(book[0], HEADERS)
+                with open(note_dir + book_name + '.txt', 'w', encoding='utf-8') as f:
+                    f.write(notes)
+
+                # 写入成功后跳出循环，防止重复写入
+                break
+            except:
+                # 忽略异常，直接重试
+                pbar.set_description("获取笔记【{}】失败，开始第{}次重试".format(book_name, try_count + 1))
+
+                # 等待3秒后再重试
+                time.sleep(3)
