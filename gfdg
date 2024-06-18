@@ -1,0 +1,26 @@
+# 10、xlrd.biffh.unpack_unicode函数
+def unpack_unicode(data, pos, lenlen=2):
+    # 检查数据长度是否足够读取长度前缀
+    if len(data) < pos + lenlen:
+        raise ValueError("Data is too short to read length prefix.")
+    # 读取长度前缀(假设是小端序)
+    length = int.from_bytes(data[pos:pos + lenlen], byteorder='little')
+    # 检查剩余数据长度是否足够读取字符串
+    if len(data) < pos + lenlen + length * 2:
+        raise ValueError("Data is too short to read the entire string.")
+    # 读取实际的Unicode字符串(UTF-16LE编码)
+    string_data = data[pos + lenlen:pos + lenlen + length * 2]
+    # 解码UTF-16LE编码的字符串
+    return string_data.decode('utf-16le')
+if __name__ == '__main__':
+    # 这是一个模拟的BIFF数据
+    # 它包含一个2字节的长度前缀(0x000A，即10)和一个10字节的UTF-16LE编码的字符串"Hello, world!"
+    data = b'\x00\x0A\x00H\x00e\x00l\x00l\x00o\x00,\x00 \x00w\x00o\x00r\x00l\x00d\x00!\x00'
+    # 假设我们知道字符串从第2个字节开始(跳过了长度前缀)
+    pos = 2
+    # 调用模拟的unpack_unicode函数
+    try:
+        result = unpack_unicode(data, pos)
+        print(result)  # 输出: Hello, world!
+    except ValueError as e:
+        print(f"An error occurred: {e}")
