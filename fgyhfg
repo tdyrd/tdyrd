@@ -1,0 +1,17 @@
+/*
+     *用于定义API主界面的信息，比如可以声明所有的API的总标题、描述、版本
+     */
+    private ApiInfo apiDemo() {
+        return new ApiInfoBuilder()
+                //用来自定义API的标题
+                .title("SpringBoot项目SwaggerAPIAPI标题测试")
+                //用来描述整体的API
+                .description("SpringBoot项目SwaggerAPI描述测试")
+                //创建人信息
+                .contact(new Contact("测试员张三","http://localhost:8080/springboot/swagger-ui.html","xxxxxxxx@163.com"))
+                //用于定义服务的域名
+                //.termsOfServiceUrl("")
+                .version("1.0") //可以用来定义版本
+                .build();
+    }
+
