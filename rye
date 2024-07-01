@@ -1,0 +1,46 @@
+for i,j in enumerate(word_images):  
+    plt.subplot(1,7,i+1)
+    plt.imshow(word_images[i],cmap='gray')
+plt.show()
+# 准备模板(template[0-9]为数字模板；)
+template = ['0','1','2','3','4','5','6','7','8','9',
+            'A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
+            '藏','川','鄂','甘','赣','贵','桂','黑','沪','吉','冀','津','晋','京','辽','鲁','蒙','闽','宁',
+            '青','琼','陕','苏','皖','湘','新','渝','豫','粤','云','浙']
+
+# 读取一个文件夹下的所有图片，输入参数是文件名，返回模板文件地址列表
+def read_directory(directory_name):
+    referImg_list = []
+    for filename in os.listdir(directory_name):
+        referImg_list.append(directory_name + "/" + filename)
+    return referImg_list
+
+# 获得中文模板列表（只匹配车牌的第一个字符）
+def get_chinese_words_list():
+    chinese_words_list = []
+    for i in range(34,64):
+        #将模板存放在字典中
+        c_word = read_directory('D:/refer1/'+ template[i])
+        chinese_words_list.append(c_word)
+    return chinese_words_list
+chinese_words_list = get_chinese_words_list()
+
+
+# 获得英文模板列表（只匹配车牌的第二个字符）
+def get_eng_words_list():
+    eng_words_list = []
+    for i in range(10,34):
+        e_word = read_directory('D:/refer1/'+ template[i])
+        eng_words_list.append(e_word)
+    return eng_words_list
+eng_words_list = get_eng_words_list()
+
+
+# 获得英文和数字模板列表（匹配车牌后面的字符）
+def get_eng_num_words_list():
+    eng_num_words_list = []
+    for i in range(0,34):
+        word = read_directory('D:/refer1/'+ template[i])
+        eng_num_words_list.append(word)
+    return eng_num_words_list
+eng_num_words_list = get_eng_num_words_list()
