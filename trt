@@ -1,0 +1,16 @@
+class Factory {
+    public static Product createProduct(String type) {
+        if (type.equals("A")) {
+            return new ConcreteProductA();
+        } else if (type.equals("B")) {
+            return new ConcreteProductB();
+        }
+        return null;
+    }
+}
+public class Client {
+    public static void main(String[] args) {
+        Product product = Factory.createProduct("A");
+        product.use();
+    }
+}
