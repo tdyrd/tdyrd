@@ -1,0 +1,18 @@
+# 初始化 monthly_data 字典
+monthly_data = defaultdict(list)
+# 遍历 formatted_data，将日期时间字符串转换为月份并添加到 monthly_data 字典中
+for item in formatted_data:
+    month = datetime.strptime(item['日期时间'], '%Y-%m-%d').month
+    if 1 <= month <= 12:
+        monthly_data[month].append(item)
+
+# 提取数据
+for month in range(1, 12):
+    date_time = [item['日期时间'][-2:] for item in monthly_data[month]]
+    high_temp = [int(item['最高温度']) for item in monthly_data[month]]
+    low_temp = [int(item['最低温度']) for item in monthly_data[month]]
+    weather = [item['天气状况'] for item in monthly_data[month]]
+
+    # 调用 show() 函数绘制折线图、散点图、饼状图和热力图、3D曲面图
+    show(date_time, high_temp, low_temp, weather)
+
